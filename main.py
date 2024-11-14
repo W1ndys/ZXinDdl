@@ -1,11 +1,10 @@
 import requests
 import json
-import base64
+from get_token import get_token  # 导入get_token函数
 
 
 def fetch_course_data(token):
     try:
-
         api_url = "https://v2.api.z-xin.net/stu/course/getJoinedCourse2"
         headers = {
             "Authorization": f"Bearer {token}",
@@ -16,49 +15,6 @@ def fetch_course_data(token):
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"请求失败: {e}")
-        return None
-
-
-def user_pass_base64(username, password):
-    # 要编码的数据，通常是二进制格式
-    username_to_encode = username.encode("utf-8")
-    password_to_encode = password.encode("utf-8")
-
-    # 使用base64.b64encode()函数进行编码
-    encoded_data_username = base64.b64encode(username_to_encode)
-    encoded_data_password = base64.b64encode(password_to_encode)
-
-    # 编码后的结果是bytes类型，可以转换为str类型以便打印或存储
-    base64_username = encoded_data_username.decode("utf-8")
-    base64_password = encoded_data_password.decode("utf-8")
-
-    return base64_username, base64_password
-
-
-def get_token(username, password):
-    try:
-        url = "https://v2.api.z-xin.net/auth/login"
-        base64_username, base64_password = user_pass_base64(username, password)
-
-        data = {"username": str(base64_username), "password": str(base64_password)}
-
-        response = requests.post(url, data=data).json()
-        code = response["code"]
-        msg = response["msg"]
-        if code == 2000:
-            print("登录成功")
-            token = response["data"]["token"]
-            print(f"token: {token}")
-            return token
-        else:
-            print("登录失败")
-            print(f"错误信息: {msg}")
-            return None
-    except requests.exceptions.RequestException as e:
-        print(f"请求失败: {e}，请检查网络连接")
-        return None
-    except KeyError as e:
-        print(f"响应中缺少预期的键: {e}，请检查账号密码是否正确")
         return None
 
 
@@ -122,6 +78,12 @@ def process_course_data(course_data):
             print("[-]数据获取失败")
 
 
-token = get_token("xxxx", "xxxx")
+# 从配置文件中读取账号和密码
+with open("config.json", "r", encoding="utf-8") as config_file:
+    config = json.load(config_file)
+    username = config["username"]
+    password = config["password"]
+
+token = get_token(username, password)
 course_data = fetch_course_data(token)
 process_course_data(course_data)
