@@ -19,7 +19,7 @@ def fetch_course_data(token):
         return None
 
 
-def process_course_data(course_data):
+def process_course_scores(course_data):  # 修改函数名
     if course_data:
         # 把数据直接保存到文件
         with open("course_data.json", "w", encoding="utf-8") as file:
@@ -43,12 +43,14 @@ def process_course_data(course_data):
                     data += "----------------------------------------------------------------\n"
 
             # 检查并创建目录
-            os.makedirs("socre_info", exist_ok=True)
+            os.makedirs("score_info", exist_ok=True)  # 修改目录名
             # 修改生成文件名，保存在子目录下
-            with open("socre_info/course_socre.txt", "w", encoding="utf-8") as file:
+            with open(
+                "score_info/course_score.txt", "w", encoding="utf-8"
+            ) as file:  # 修改文件名
                 file.write(data)
             print(
-                "[+]成绩数据解析完成，结果已保存到 socre_info/course_socre.txt 文件中"
+                "[+]成绩数据解析完成，结果已保存到 score_info/course_score.txt 文件中"  # 修改文件路径
             )
             print("[+]成绩数据程序运行结束")
             print("--------------------------------")
@@ -76,6 +78,6 @@ if __name__ == "__main__":
     token = get_token(username, password)
     if token:
         course_data = fetch_course_data(token)
-        process_course_data(course_data)
+        process_course_scores(course_data)  # 调用修改后的函数名
     else:
         print("[-]获取token失败")
