@@ -1,6 +1,7 @@
 import requests
 import json
 from get_token import get_token  # 导入get_token函数
+import os
 
 
 def fetch_course_data(token):
@@ -33,18 +34,21 @@ def process_course_data(course_data):
             for course in course_data["data"]:
                 for homework in course["homework"]:
                     data += f"课程名称: {course['course']['name']}\n"
+                    data += f"作业标题: {homework['title']}\n"
                     data += f"课程老师: {course['teacher']['user']['nickname']}\n"
                     if homework["studenthomework"]:
-                        data += f"最终得分: {homework['studenthomework'][0]['finalScore']}\n"
+                        data += f"最终得分: {homework['studenthomework'][0]['finalScore']}（若已提交显示0分可能是教师未评分）\n"
                     else:
                         data += "暂未作答，无相关成绩数据\n"
                     data += "----------------------------------------------------------------\n"
 
+            # 检查并创建目录
+            os.makedirs("socre_info", exist_ok=True)
             # 修改生成文件名，保存在子目录下
-            with open("socre_info/course_summary.txt", "w", encoding="utf-8") as file:
+            with open("socre_info/course_socre.txt", "w", encoding="utf-8") as file:
                 file.write(data)
             print(
-                "[+]成绩数据解析完成，结果已保存到 socre_info/course_summary.txt 文件中"
+                "[+]成绩数据解析完成，结果已保存到 socre_info/course_socre.txt 文件中"
             )
             print("[+]成绩数据程序运行结束")
             print("--------------------------------")
