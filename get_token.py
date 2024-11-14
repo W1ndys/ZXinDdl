@@ -21,17 +21,17 @@ def get_token(username, password):
         code = response["code"]
         msg = response["msg"]
         if code == 2000:
-            print("登录成功")
+            print("[+]登录成功")
             token = response["data"]["token"]
-            print(f"token: {token}")
+            print("[+]获取token成功")
             return token
         else:
-            print("登录失败")
+            print("[-]登录失败")
             print(f"错误信息: {msg}")
             return None
     except requests.exceptions.RequestException as e:
-        print(f"请求失败: {e}，请检查网络连接")
+        print(f"[-]请求失败: {e}，请检查网络连接")
         return None
     except KeyError as e:
-        print(f"响应中缺少预期的键: {e}，请检查账号密码是否正确")
+        print(f"[-]响应中缺少预期的键: {e}，请检查账号密码是否正确")
         return None

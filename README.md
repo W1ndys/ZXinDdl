@@ -6,17 +6,20 @@
 
 ## 使用方法
 
-1. 修改 main.py 中的账号密码
-2. 运行 main.py
-3. 结果会保存到 result.txt 文件中
+### 查看成绩
+
+1. 修改 `config.json` 中的账号密码
+2. 运行 `get_score.py`
+3. 结果会保存到 `socre_info/course_summary.txt` 文件中
 
 ### 更新日志
 
 #### 2024.11.14
 
 - feat: 使用模块化编程
-- feat: 分离 get_token 函数
-- feat: 添加了从 config.json 中读取账号密码的功能
+- feat: 分离 `get_token` 函数
+- feat: 添加了从 `config.json` 中读取账号密码的功能
+- feat: 添加了 `get_score.py` 文件，用于查看成绩（实际上是获取课程数据的子功能）
 
 #### 2024.11.12
 
